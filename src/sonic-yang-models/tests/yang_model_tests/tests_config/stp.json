@@ -11,7 +11,6 @@
             }
         }
     },
- 
     "MSTP_TEST_WRONG_MODE": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_GLOBAL": {
@@ -19,7 +18,6 @@
             }
         }
     },
- 
     "MSTP_TEST_WRONG_INSTANCE": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST_INST": {
@@ -32,7 +30,6 @@
             }
         }
     },
- 
     "MSTP_TEST_WRONG_PRIORITY": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_GLOBAL": {
@@ -40,7 +37,6 @@
             }
         }
     },
- 
     "MSTP_TEST_WITHOUT_NAME": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST": {
@@ -53,7 +49,6 @@
             }
         }
     },
- 
     "MSTP_TEST_MISSING_VLAN": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST_INST": {
@@ -66,7 +61,6 @@
             }
         }
     },
- 
     "MSTP_TEST_INVALID_VLAN_LIST": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST_INST": {
@@ -79,7 +73,6 @@
             }
         }
     },
- 
     "MSTP_TEST_MAX_HOPS_EXCEEDED": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST": {
@@ -87,7 +80,6 @@
             }
         }
     },
- 
     "MSTP_TEST_WRONG_HELLO_TIME": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST": {
@@ -95,7 +87,6 @@
             }
         }
     },
- 
     "MSTP_TEST_INVALID_FORWARD_DELAY": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST": {
@@ -103,7 +94,6 @@
             }
         }
     },
- 
     "MSTP_TEST_DUPLICATE_INSTANCE": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_MST_INST": {
@@ -120,7 +110,6 @@
             }
         }
     },
- 
     "MSTP_TEST_GLOBAL_WITH_INVALID_MODE": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_GLOBAL": {
