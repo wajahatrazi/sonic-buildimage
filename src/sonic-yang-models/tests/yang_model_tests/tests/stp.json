@@ -2,68 +2,57 @@
     "MSTP_TEST": {
         "desc": "Configure MSTP globally with valid parameters."
     },
- 
     "MSTP_TEST_WRONG_MODE": {
         "desc": "Configure an invalid STP mode in the MSTP configuration.",
         "eStrKey": "InvalidSTPMode",
-        "eStr": ["Invalid STP mode value. Valid values are 'mstp'."]
+        "eStr": ["Invalid STP mode value. Valid values are 'mstp' or 'pvst'."]
     },
- 
     "MSTP_TEST_WRONG_INSTANCE": {
         "desc": "Configure an invalid instance number in MSTP instance configuration.",
         "eStrKey": "InvalidInstanceNumber",
         "eStr": ["Invalid MST instance number. Must be within the allowed range (0-4095)."]
     },
- 
     "MSTP_TEST_WRONG_PRIORITY": {
         "desc": "Configure an invalid bridge priority value in MSTP.",
         "eStrKey": "InvalidBridgePriority",
         "eStr": ["Bridge priority must be a multiple of 4096."]
     },
- 
     "MSTP_TEST_WITHOUT_NAME": {
         "desc": "Configure MSTP region without a name (required).",
         "eStr": ["MST Region name must be provided."]
     },
- 
     "MSTP_TEST_MISSING_VLAN": {
         "desc": "Configure an MSTP instance without specifying any VLANs.",
         "eStr": ["At least one VLAN must be associated with the MSTP instance."]
     },
- 
     "MSTP_TEST_INVALID_VLAN_LIST": {
         "desc": "Configure an MSTP instance with an invalid VLAN list.",
         "eStrKey": "InvalidVlanList",
         "eStr": ["Invalid VLAN list format. Must be a comma-separated list of VLANs."]
     },
- 
     "MSTP_TEST_MAX_HOPS_EXCEEDED": {
         "desc": "Configure an MSTP instance with an invalid max hops value.",
         "eStrKey": "MaxHopsExceeded",
         "eStr": ["Max hops must be between 1 and 255."]
     },
- 
     "MSTP_TEST_WRONG_HELLO_TIME": {
         "desc": "Configure MSTP hello time outside the valid range.",
         "eStrKey": "InvalidHelloTime",
         "eStr": ["Hello time must be between 1 and 10 seconds."]
     },
- 
     "MSTP_TEST_INVALID_FORWARD_DELAY": {
         "desc": "Configure MSTP forward delay outside the valid range.",
         "eStrKey": "InvalidForwardDelay",
         "eStr": ["Forward delay must be between 4 and 30 seconds."]
     },
- 
     "MSTP_TEST_DUPLICATE_INSTANCE": {
         "desc": "Configure an MSTP instance with a duplicate instance ID.",
         "eStrKey": "DuplicateInstanceId",
         "eStr": ["Duplicate MSTP instance ID detected."]
     },
- 
     "MSTP_TEST_GLOBAL_WITH_INVALID_MODE": {
         "desc": "Configure MSTP global settings with an invalid mode.",
         "eStrKey": "InvalidMode",
-        "eStr": ["Invalid STP mode configuration. Expected 'mstp'."]
+        "eStr": ["Invalid STP mode configuration. Expected 'mstp' or 'pvst'."]
     }
 }
