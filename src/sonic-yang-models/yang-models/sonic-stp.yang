@@ -1,0 +1,236 @@
+module sonic-stp {
+    namespace "http://github.com/sonic-net/sonic-stp";
+    prefix stp;
+
+    description "SONiC STP YANG model for PVST and MST configurations";
+
+    revision 2024-11-22 {
+        description "Version01 for combined PVST and MST configurations.";
+    }
+
+    container stp {
+        description "STP global and per-instance configurations";
+
+        container global {
+            description "Global STP settings";
+            leaf mode {
+                type enumeration {
+                    enum "pvst" {
+                        description "Per VLAN Spanning Tree mode";
+                    }
+                    enum "mst" {
+                        description "Multiple Spanning Tree mode";
+                    }
+                }
+                description "STP mode (PVST or MST)";
+            }
+            leaf rootguard_timeout {
+                type uint16 {
+                    range "5..600";
+                }
+                default "30";
+                description "Root guard timeout in seconds";
+            }
+            leaf forward_delay {
+                type uint8 {
+                    range "4..30";
+                }
+                default "15";
+                description "Forward delay in seconds";
+            }
+            leaf hello_time {
+                type uint8 {
+                    range "1..10";
+                }
+                default "2";
+                description "Hello time in seconds";
+            }
+            leaf max_age {
+                type uint8 {
+                    range "6..40";
+                }
+                default "20";
+                description "Maximum age time in seconds";
+            }
+            leaf priority {
+                type uint16 {
+                    range "0..61440";
+                }
+                default "32768";
+                description "Bridge priority";
+            }
+            
+            // MST-specific attributes
+            leaf mst_name {
+                when "../mode = 'mst'";
+                type string {
+                    length "1..32";
+                }
+                default "<MAC_ADDRESS>";
+                description "MST region name (default: MAC address of switch)";
+            }
+            leaf mst_revision {
+                when "../mode = 'mst'";
+                type uint16 {
+                    range "0..65535";
+                }
+                default "0";
+                description "MST region revision number";
+            }
+            leaf mst_max_hop {
+                when "../mode = 'mst'";
+                type uint8 {
+                    range "1..40";
+                }
+                default "20";
+                description "Maximum hops in MST region";
+            }
+        }
+
+        list vlan {
+            key "vlan-id";
+            description "VLAN-specific STP settings";
+            leaf vlan-id {
+                type uint16;
+                description "VLAN ID";
+            }
+            leaf enabled {
+                type boolean;
+                default "false";
+                description "Whether STP is enabled for this VLAN";
+            }
+            leaf forward_delay {
+                type uint8 {
+                    range "4..30";
+                }
+                default "15";
+                description "Forward delay for this VLAN";
+            }
+            leaf hello_time {
+                type uint8 {
+                    range "1..10";
+                }
+                default "2";
+                description "Hello time for this VLAN";
+            }
+            leaf max_age {
+                type uint8 {
+                    range "6..40";
+                }
+                default "20";
+                description "Max age for this VLAN";
+            }
+            leaf priority {
+                type uint16 {
+                    range "0..61440";
+                }
+                default "32768";
+                description "Bridge priority for this VLAN";
+            }
+        }
+
+        list interface {
+            key "name";
+            description "Interface-level STP configuration";
+            leaf name {
+                type string;
+                description "Interface name (physical or port-channel)";
+            }
+            leaf enabled {
+                type boolean;
+                default "true";
+                description "Whether STP is enabled on this interface";
+            }
+            leaf root_guard {
+                type boolean;
+                default "false";
+                description "Whether root guard is enabled on this interface";
+            }
+            leaf bpdu_guard {
+                type boolean;
+                default "false";
+                description "Whether BPDU guard is enabled";
+            }
+            leaf bpdu_guard_do_disable {
+                type boolean;
+                default "false";
+                description "Disable port when BPDU is received";
+            }
+            leaf path_cost {
+                type uint32 {
+                    range "1..200000000";
+                }
+                description "Path cost for this interface";
+            }
+            leaf priority {
+                type uint8 {
+                    range "0..240";
+                }
+                default "128";
+                description "Interface priority";
+            }
+            leaf portfast {
+                type boolean;
+                default "false";
+                description "Portfast is enabled or not";
+            }
+            leaf uplink_fast {
+                type boolean;
+                default "false";
+                description "Uplink fast is enabled or not";
+            }
+        }
+
+        list mst_instance {
+            when "../global/mode = 'mst'";
+            key "instance-id";
+            description "MST instance configurations";
+            leaf instance-id {
+                type uint8 {
+                    range "0..63";
+                }
+                description "MST instance ID";
+            }
+            leaf bridge_priority {
+                type uint16 {
+                    range "0..61440";
+                }
+                default "32768";
+                description "Bridge priority for this MST instance";
+            }
+            leaf vlan_list {
+                type string;
+                description "List of VLANs assigned to this MST instance";
+            }
+        }
+
+        list mst_port {
+            when "../global/mode = 'mst'";
+            key "instance-id interface";
+            description "Per-port MST configuration";
+            leaf instance-id {
+                type uint8 {
+                    range "0..63";
+                }
+                description "MST instance ID";
+            }
+            leaf interface {
+                type string;
+                description "Interface name (physical or port-channel)";
+            }
+            leaf path_cost {
+                type uint32 {
+                    range "1..20000000";
+                }
+                description "Path cost for this MST instance port";
+            }
+            leaf priority {
+                type uint8 {
+                    range "0..240";
+                }
+                default "128";
+                description "Port priority for this MST instance";
+            }
+        }
+    }
+}
