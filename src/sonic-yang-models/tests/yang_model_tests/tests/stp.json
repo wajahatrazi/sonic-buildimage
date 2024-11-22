@@ -1,58 +1,105 @@
 {
-    "MSTP_TEST": {
-        "desc": "Configure MSTP globally with valid parameters."
+    "STP_GLOBAL_CONFIG_TEST": {
+        "desc": "Configure STP globally with valid mode (mstp or pvst)."
     },
-    "MSTP_TEST_WRONG_MODE": {
-        "desc": "Configure an invalid STP mode in the MSTP configuration.",
+    "STP_GLOBAL_INVALID_PRIORITY": {
+        "desc": "Configure an invalid priority value in the STP global settings.",
+        "eStrKey": "InvalidValue",
+        "eStr": ["priority"]
+    },
+    "STP_GLOBAL_INVALID_MODE_TEST": {
+        "desc": "Configure STP globally with an invalid mode.",
         "eStrKey": "InvalidSTPMode",
         "eStr": ["Invalid STP mode value. Valid values are 'mstp' or 'pvst'."]
     },
-    "MSTP_TEST_WRONG_INSTANCE": {
-        "desc": "Configure an invalid instance number in MSTP instance configuration.",
-        "eStrKey": "InvalidInstanceNumber",
-        "eStr": ["Invalid MST instance number. Must be within the allowed range (0-4095)."]
+    "STP_GLOBAL_CONFIG_NO_MODE_NEG_TEST": {
+        "desc": "Configure STP globally without specifying a mode.",
+        "eStrKey": "Mandatory",
+        "eStr": ["STP mode must be specified."]
     },
-    "MSTP_TEST_WRONG_PRIORITY": {
-        "desc": "Configure an invalid bridge priority value in MSTP.",
-        "eStrKey": "InvalidBridgePriority",
+    "STP_VLAN_VALID_CONFIG_TEST": {
+        "desc": "Configure PVST VLAN with valid parameters (priority and VLAN ID)."
+    },
+    "STP_VLAN_INVALID_VLAN_ID_NEG_TEST": {
+        "desc": "Configure PVST VLAN with an invalid VLAN ID.",
+        "eStrKey": "InvalidVlanID",
+        "eStr": ["VLAN ID must be between 1 and 4094."]
+    },
+    "STP_VLAN_INVALID_PRIORITY_NEG_TEST": {
+        "desc": "Configure PVST VLAN with an invalid bridge priority.",
+        "eStrKey": "InvalidPriority",
         "eStr": ["Bridge priority must be a multiple of 4096."]
     },
-    "MSTP_TEST_WITHOUT_NAME": {
-        "desc": "Configure MSTP region without a name (required).",
-        "eStr": ["MST Region name must be provided."]
+    "STP_VLAN_MISSING_PRIORITY_NEG_TEST": {
+        "desc": "Configure PVST VLAN without specifying priority.",
+        "eStrKey": "Mandatory",
+        "eStr": ["Bridge priority must be specified for PVST VLAN."]
     },
-    "MSTP_TEST_MISSING_VLAN": {
-        "desc": "Configure an MSTP instance without specifying any VLANs.",
-        "eStr": ["At least one VLAN must be associated with the MSTP instance."]
+    "STP_VLAN_DUPLICATE_CONFIG_NEG_TEST": {
+        "desc": "Configure PVST VLAN with a duplicate VLAN ID.",
+        "eStrKey": "DuplicateVlanID",
+        "eStr": ["Duplicate VLAN ID detected."]
     },
-    "MSTP_TEST_INVALID_VLAN_LIST": {
-        "desc": "Configure an MSTP instance with an invalid VLAN list.",
-        "eStrKey": "InvalidVlanList",
-        "eStr": ["Invalid VLAN list format. Must be a comma-separated list of VLANs."]
+    "STP_INTERFACE_VALID_CONFIG_TEST": {
+        "desc": "Configure STP parameters on an interface with valid values."
     },
-    "MSTP_TEST_MAX_HOPS_EXCEEDED": {
-        "desc": "Configure an MSTP instance with an invalid max hops value.",
-        "eStrKey": "MaxHopsExceeded",
-        "eStr": ["Max hops must be between 1 and 255."]
+    "STP_INTERFACE_INVALID_COST_NEG_TEST": {
+        "desc": "Configure an invalid path cost for an interface.",
+        "eStrKey": "InvalidPathCost",
+        "eStr": ["Path cost must be a positive integer."]
     },
-    "MSTP_TEST_WRONG_HELLO_TIME": {
-        "desc": "Configure MSTP hello time outside the valid range.",
-        "eStrKey": "InvalidHelloTime",
-        "eStr": ["Hello time must be between 1 and 10 seconds."]
+    "STP_INTERFACE_DUPLICATE_NEG_TEST": {
+        "desc": "Configure duplicate STP parameters for the same interface.",
+        "eStrKey": "DuplicateInterfaceConfig",
+        "eStr": ["Duplicate interface configuration detected."]
     },
-    "MSTP_TEST_INVALID_FORWARD_DELAY": {
-        "desc": "Configure MSTP forward delay outside the valid range.",
-        "eStrKey": "InvalidForwardDelay",
-        "eStr": ["Forward delay must be between 4 and 30 seconds."]
+    "STP_MST_GLOBAL_CONFIG_TEST": {
+        "desc": "Configure MSTP globally with valid parameters."
     },
-    "MSTP_TEST_DUPLICATE_INSTANCE": {
-        "desc": "Configure an MSTP instance with a duplicate instance ID.",
-        "eStrKey": "DuplicateInstanceId",
+    "STP_MST_REGION_NAME_MISSING_NEG_TEST": {
+        "desc": "Configure MSTP region without specifying a name.",
+        "eStrKey": "Mandatory",
+        "eStr": ["MST region name must be provided."]
+    },
+    "STP_MST_REGION_NAME_INVALID_NEG_TEST": {
+        "desc": "Configure MSTP with an invalid region name.",
+        "eStrKey": "InvalidValue",
+        "eStr": ["MST region name contains invalid characters."]
+    },
+    "STP_MST_INSTANCE_VALID_CONFIG_TEST": {
+        "desc": "Configure MSTP instance with valid instance ID and VLAN mapping."
+    },
+    "STP_MST_INSTANCE_DUPLICATE_ID_NEG_TEST": {
+        "desc": "Configure MSTP instance with a duplicate instance ID.",
+        "eStrKey": "DuplicateInstanceID",
         "eStr": ["Duplicate MSTP instance ID detected."]
     },
-    "MSTP_TEST_GLOBAL_WITH_INVALID_MODE": {
-        "desc": "Configure MSTP global settings with an invalid mode.",
-        "eStrKey": "InvalidMode",
-        "eStr": ["Invalid STP mode configuration. Expected 'mstp' or 'pvst'."]
+    "STP_MST_INSTANCE_INVALID_VLAN_NEG_TEST": {
+        "desc": "Configure MSTP instance with an invalid VLAN list.",
+        "eStrKey": "InvalidVlanList",
+        "eStr": ["VLAN list contains invalid or out-of-range VLAN IDs."]
+    },
+    "STP_MST_INSTANCE_MISSING_VLAN_NEG_TEST": {
+        "desc": "Configure MSTP instance without associating VLANs.",
+        "eStrKey": "Mandatory",
+        "eStr": ["At least one VLAN must be associated with the MSTP instance."]
+    },
+    "STP_MST_PORT_CONFIG_TEST": {
+        "desc": "Configure MSTP parameters on a port with valid settings."
+    },
+    "STP_MST_PORT_INVALID_PRIORITY_NEG_TEST": {
+        "desc": "Configure MSTP port with an invalid port priority.",
+        "eStrKey": "InvalidPortPriority",
+        "eStr": ["Port priority must be a multiple of 16 between 0 and 240."]
+    },
+    "STP_MST_PORT_INVALID_COST_NEG_TEST": {
+        "desc": "Configure MSTP port with an invalid path cost.",
+        "eStrKey": "InvalidPathCost",
+        "eStr": ["Path cost must be a positive integer."]
+    },
+    "STP_MST_PORT_DUPLICATE_NEG_TEST": {
+        "desc": "Configure MSTP parameters with duplicate port settings.",
+        "eStrKey": "DuplicatePortConfig",
+        "eStr": ["Duplicate MSTP port configuration detected."]
     }
 }

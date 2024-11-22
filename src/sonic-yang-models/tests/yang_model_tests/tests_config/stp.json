@@ -116,5 +116,103 @@
                 "mode": "invalid_mode"
             }
         }
+    },
+
+    "PVST_TEST": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_GLOBAL": {
+                "mode": "pvst",
+                "forward_delay": 15,
+                "hello_time": 2,
+                "max_age": 20,
+                "rootguard_timeout": 30,
+                "priority": 32768
+            }
+        }
+    },
+    "PVST_TEST_WRONG_MODE": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_GLOBAL": {
+                "mode": "unknown_mode"
+            }
+        }
+    },
+    "PVST_TEST_WRONG_PRIORITY": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_GLOBAL": {
+                "priority": 1000
+            }
+        }
+    },
+    "PVST_TEST_INVALID_VLAN_ID": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_VLAN": {
+                "STP_VLAN_LIST": [
+                    {
+                        "vlan": 5000
+                    }
+                ]
+            }
+        }
+    },
+    "PVST_TEST_MISSING_VLAN": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_VLAN": {
+                "STP_VLAN_LIST": [
+                    {
+                        "vlan": []
+                    }
+                ]
+            }
+        }
+    },
+    "PVST_TEST_DUPLICATE_VLAN": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_VLAN": {
+                "STP_VLAN_LIST": [
+                    {
+                        "vlan": 10
+                    },
+                    {
+                        "vlan": 10
+                    }
+                ]
+            }
+        }
+    },
+    "PVST_TEST_VLAN_WITHOUT_PRIORITY": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_VLAN": {
+                "STP_VLAN_LIST": [
+                    {
+                        "vlan": 10
+                    }
+                ]
+            }
+        }
+    },
+    "PVST_TEST_INVALID_PRIORITY": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_VLAN": {
+                "STP_VLAN_LIST": [
+                    {
+                        "vlan": 10,
+                        "priority": 1000
+                    }
+                ]
+            }
+        }
+    },
+    "PVST_TEST_INVALID_PATH_COST": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_INTF": {
+                "STP_INTF_LIST": [
+                    {
+                        "interface": "Ethernet0",
+                        "path_cost": -1
+                    }
+                ]
+            }
+        }
     }
 }
