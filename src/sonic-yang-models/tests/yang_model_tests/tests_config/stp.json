@@ -16,7 +16,7 @@
             "sonic-stp:STP_GLOBAL": {
                 "mode": "unknown_mode"
             }
-        }
+        } 
     },
     "MSTP_TEST_WRONG_INSTANCE": {
         "sonic-stp:sonic-stp": {
