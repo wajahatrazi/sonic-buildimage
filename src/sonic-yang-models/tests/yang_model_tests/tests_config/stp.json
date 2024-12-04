@@ -2,7 +2,7 @@
     "MSTP_TEST": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_GLOBAL": {
-                "mode": "mstp",
+                "mode": "mst",
                 "forward_delay": 15,
                 "hello_time": 2,
                 "max_age": 20,
@@ -117,7 +117,6 @@
             }
         }
     },
-
     "PVST_TEST": {
         "sonic-stp:sonic-stp": {
             "sonic-stp:STP_GLOBAL": {
@@ -149,7 +148,7 @@
             "sonic-stp:STP_VLAN": {
                 "STP_VLAN_LIST": [
                     {
-                        "vlan": 5000
+                        "vlanid": 5000
                     }
                 ]
             }
@@ -160,7 +159,7 @@
             "sonic-stp:STP_VLAN": {
                 "STP_VLAN_LIST": [
                     {
-                        "vlan": []
+                        "vlanid": []
                     }
                 ]
             }
@@ -171,10 +170,10 @@
             "sonic-stp:STP_VLAN": {
                 "STP_VLAN_LIST": [
                     {
-                        "vlan": 10
+                        "vlanid": 10
                     },
                     {
-                        "vlan": 10
+                        "vlanid": 10
                     }
                 ]
             }
@@ -185,7 +184,7 @@
             "sonic-stp:STP_VLAN": {
                 "STP_VLAN_LIST": [
                     {
-                        "vlan": 10
+                        "vlanid": 10
                     }
                 ]
             }
@@ -196,7 +195,7 @@
             "sonic-stp:STP_VLAN": {
                 "STP_VLAN_LIST": [
                     {
-                        "vlan": 10,
+                        "vlanid": 10,
                         "priority": 1000
                     }
                 ]
@@ -210,6 +209,53 @@
                     {
                         "interface": "Ethernet0",
                         "path_cost": -1
+                    }
+                ]
+            }
+        }
+    },
+    "MSTP_TEST_VALID_INTERFACE_CONFIG": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:interface": {
+                "interface": [
+                    {
+                        "name": "Ethernet0",
+                        "enabled": true,
+                        "root_guard": false,
+                        "bpdu_guard": false,
+                        "bpdu_guard_do_disable": false,
+                        "path_cost": 20000,
+                        "priority": 128,
+                        "portfast": false,
+                        "uplink_fast": false
+                    }
+                ]
+            }
+        }
+    },
+    "MSTP_TEST_INVALID_INTERFACE_PRIORITY": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:interface": {
+                "interface": [
+                    {
+                        "name": "Ethernet0",
+                        "priority": 300
+                    }
+                ]
+            }
+        }
+    },
+    "MSTP_TEST_DUPLICATE_INTERFACE_CONFIG": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:interface": {
+                "interface": [
+                    {
+                        "name": "Ethernet0",
+                        "path_cost": 20000
+                    },
+                    {
+                        "name": "Ethernet0",
+                        "path_cost": 20000
                     }
                 ]
             }
