@@ -1,6 +1,6 @@
 {
     "STP_GLOBAL_CONFIG_TEST": {
-        "desc": "Configure STP globally with valid mode (mstp or pvst)."
+        "desc": "Configure STP globally with valid mode (mst or pvst)."
     },
     "STP_GLOBAL_INVALID_PRIORITY": {
         "desc": "Configure an invalid priority value in the STP global settings.",
@@ -10,7 +10,7 @@
     "STP_GLOBAL_INVALID_MODE_TEST": {
         "desc": "Configure STP globally with an invalid mode.",
         "eStrKey": "InvalidSTPMode",
-        "eStr": ["Invalid STP mode value. Valid values are 'mstp' or 'pvst'."]
+        "eStr": ["Invalid STP mode value. Valid values are 'mst' or 'pvst'."]
     },
     "STP_GLOBAL_CONFIG_NO_MODE_NEG_TEST": {
         "desc": "Configure STP globally without specifying a mode.",
@@ -23,12 +23,12 @@
     "STP_VLAN_INVALID_VLAN_ID_NEG_TEST": {
         "desc": "Configure PVST VLAN with an invalid VLAN ID.",
         "eStrKey": "InvalidVlanID",
-        "eStr": ["VLAN ID must be between 1 and 4094."]
+        "eStr": ["VLAN ID must be between 1 and 4095."]
     },
     "STP_VLAN_INVALID_PRIORITY_NEG_TEST": {
         "desc": "Configure PVST VLAN with an invalid bridge priority.",
         "eStrKey": "InvalidPriority",
-        "eStr": ["Bridge priority must be a multiple of 4096."]
+        "eStr": ["Bridge priority must be between 0 and 61440."]
     },
     "STP_VLAN_MISSING_PRIORITY_NEG_TEST": {
         "desc": "Configure PVST VLAN without specifying priority.",
@@ -46,7 +46,7 @@
     "STP_INTERFACE_INVALID_COST_NEG_TEST": {
         "desc": "Configure an invalid path cost for an interface.",
         "eStrKey": "InvalidPathCost",
-        "eStr": ["Path cost must be a positive integer."]
+        "eStr": ["Path cost must be between 1 and 200000000."]
     },
     "STP_INTERFACE_DUPLICATE_NEG_TEST": {
         "desc": "Configure duplicate STP parameters for the same interface.",
@@ -64,7 +64,7 @@
     "STP_MST_REGION_NAME_INVALID_NEG_TEST": {
         "desc": "Configure MSTP with an invalid region name.",
         "eStrKey": "InvalidValue",
-        "eStr": ["MST region name contains invalid characters."]
+        "eStr": ["MST region name must be between 1 and 32 characters."]
     },
     "STP_MST_INSTANCE_VALID_CONFIG_TEST": {
         "desc": "Configure MSTP instance with valid instance ID and VLAN mapping."
@@ -90,12 +90,12 @@
     "STP_MST_PORT_INVALID_PRIORITY_NEG_TEST": {
         "desc": "Configure MSTP port with an invalid port priority.",
         "eStrKey": "InvalidPortPriority",
-        "eStr": ["Port priority must be a multiple of 16 between 0 and 240."]
+        "eStr": ["Port priority must be between 0 and 240."]
     },
     "STP_MST_PORT_INVALID_COST_NEG_TEST": {
         "desc": "Configure MSTP port with an invalid path cost.",
         "eStrKey": "InvalidPathCost",
-        "eStr": ["Path cost must be a positive integer."]
+        "eStr": ["Path cost must be between 1 and 20000000."]
     },
     "STP_MST_PORT_DUPLICATE_NEG_TEST": {
         "desc": "Configure MSTP parameters with duplicate port settings.",
