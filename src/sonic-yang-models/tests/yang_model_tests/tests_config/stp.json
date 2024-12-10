@@ -16,7 +16,7 @@
             "sonic-stp:STP_GLOBAL": {
                 "mode": "unknown_mode"
             }
-        } 
+        }
     },
     "MSTP_TEST_WRONG_INSTANCE": {
         "sonic-stp:sonic-stp": {
@@ -67,7 +67,7 @@
                 "STP_MST_INST_LIST": [
                     {
                         "instance": 1,
-                        "vlan": "vlan1, vlan2, vlan3"
+                        "vlan": ["vlan1", "vlan2", "vlan3"]
                     }
                 ]
             }
@@ -204,10 +204,10 @@
     },
     "PVST_TEST_INVALID_PATH_COST": {
         "sonic-stp:sonic-stp": {
-            "sonic-stp:STP_INTF": {
-                "STP_INTF_LIST": [
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
                     {
-                        "interface": "Ethernet0",
+                        "ifname": "Ethernet0",
                         "path_cost": -1
                     }
                 ]
@@ -216,10 +216,10 @@
     },
     "MSTP_TEST_VALID_INTERFACE_CONFIG": {
         "sonic-stp:sonic-stp": {
-            "sonic-stp:interface": {
-                "interface": [
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
                     {
-                        "name": "Ethernet0",
+                        "ifname": "Ethernet0",
                         "enabled": true,
                         "root_guard": false,
                         "bpdu_guard": false,
@@ -227,7 +227,9 @@
                         "path_cost": 20000,
                         "priority": 128,
                         "portfast": false,
-                        "uplink_fast": false
+                        "uplink_fast": false,
+                        "edge_port": true,
+                        "link_type": "auto"
                     }
                 ]
             }
@@ -235,10 +237,10 @@
     },
     "MSTP_TEST_INVALID_INTERFACE_PRIORITY": {
         "sonic-stp:sonic-stp": {
-            "sonic-stp:interface": {
-                "interface": [
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
                     {
-                        "name": "Ethernet0",
+                        "ifname": "Ethernet0",
                         "priority": 300
                     }
                 ]
@@ -247,15 +249,39 @@
     },
     "MSTP_TEST_DUPLICATE_INTERFACE_CONFIG": {
         "sonic-stp:sonic-stp": {
-            "sonic-stp:interface": {
-                "interface": [
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
                     {
-                        "name": "Ethernet0",
+                        "ifname": "Ethernet0",
                         "path_cost": 20000
                     },
                     {
-                        "name": "Ethernet0",
+                        "ifname": "Ethernet0",
                         "path_cost": 20000
+                    }
+                ]
+            }
+        }
+    },
+    "MSTP_TEST_INVALID_EDGE_PORT": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
+                    {
+                        "ifname": "Ethernet0",
+                        "edge_port": true
+                    }
+                ]
+            }
+        }
+    },
+    "MSTP_TEST_INVALID_LINK_TYPE": {
+        "sonic-stp:sonic-stp": {
+            "sonic-stp:STP_PORT": {
+                "STP_PORT_LIST": [
+                    {
+                        "ifname": "Ethernet0",
+                        "link_type": "invalid_type"
                     }
                 ]
             }
