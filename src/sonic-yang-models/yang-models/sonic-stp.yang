@@ -1,15 +1,24 @@
 module sonic-stp {
     namespace "http://github.com/sonic-net/sonic-stp";
     prefix stp;
+<<<<<<< HEAD
     yang-version 1.1;
 
     import sonic-extension {
+=======
+
+    import sonic-ext {
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
         prefix sonic-ext;
     }
 
     description "SONiC STP YANG model for PVST and MST configurations";
 
+<<<<<<< HEAD
     revision 2024-11-24 {
+=======
+    revision 2024-11-22 {
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
         description "Version01 for combined PVST and MST configurations.";
     }
 
@@ -59,12 +68,17 @@ module sonic-stp {
                     error-message "Invalid Bridge Priority value.";
                 }
             }
+<<<<<<< HEAD
+=======
+            sonic-ext:custom-validation ValidateBridgePriority;
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
             default 32768;
             description
                 "The manageable component of the Bridge Identifier";
         }
     }
 
+<<<<<<< HEAD
     grouping interfaceAttr {
         leaf path_cost {
             type uint64 {
@@ -134,16 +148,75 @@ module sonic-stp {
                 }
 
                 uses vlanModeAttr;
+=======
+    container stp {
+        description "STP global and per-instance configurations";
+
+        container global {
+            description "Global STP settings";
+            leaf mode {
+                type enumeration {
+                    enum "pvst" {
+                        description "Per VLAN Spanning Tree mode";
+                    }
+                    enum "mst" {
+                        description "Multiple Spanning Tree mode";
+                    }
+                }
+                description "STP mode (PVST or MST)";
+            }
+            leaf rootguard_timeout {
+                type uint16 {
+                    range "5..600";
+                }
+                default "30";
+                description "Root guard timeout in seconds";
+            }
+
+            uses vlanModeAttr;
+            
+            // MST-specific attributes
+            leaf mst_name {
+                when "../mode = 'mst'";
+                type string {
+                    length "1..32";
+                }
+                default "<MAC_ADDRESS>";
+                description "MST region name (default: MAC address of switch)";
+            }
+            leaf mst_revision {
+                when "../mode = 'mst'";
+                type uint16 {
+                    range "0..65535";
+                }
+                default "0";
+                description "MST region revision number";
+            }
+            leaf mst_max_hop {
+                when "../mode = 'mst'";
+                type uint8 {
+                    range "1..40";
+                }
+                default "20";
+                description "Maximum hops in MST region";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
             }
         }
 
         container STP_VLAN {
             list STP_VLAN_LIST {
                 key "name";
+<<<<<<< HEAD
                 leaf name {
                     type string;
                     description
                         "Vlan identifier";
+=======
+                sonic-ext:custom-validation ValidateStpMaxInstance;
+                leaf name {
+                    type string;
+                    description "Vlan identifier";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf vlanid {
@@ -153,21 +226,32 @@ module sonic-stp {
                             error-app-tag vlanid-invalid;
                         }
                     }
+<<<<<<< HEAD
                     description
                         "Vlan identifier number";
+=======
+                    description "Vlan identifier number";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf enabled {
                     type boolean;
+<<<<<<< HEAD
                     mandatory true;
                     description
                         "Spanning tree enabled/disabled on Vlan";
+=======
+                    sonic-ext:custom-validation ValidateStpDisableVlan;
+                    mandatory true;
+                    description "Spanning tree enabled/disabled on Vlan";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 uses vlanModeAttr;
             }
         }
 
+<<<<<<< HEAD
         container STP_VLAN_PORT {
             list STP_VLAN_PORT_LIST {
                 key "vlan-name ifname";
@@ -265,6 +349,8 @@ module sonic-stp {
             }
         }
 
+=======
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
         container STP_MST {
             list STP_MST_LIST {
                 max-elements 1;
@@ -275,8 +361,12 @@ module sonic-stp {
                     type enumeration {
                         enum GLOBAL;
                     }
+<<<<<<< HEAD
                     description
                         "Key node identifier. It's value is always GLOBAL";
+=======
+                    description "Key node identifier. It's value is always GLOBAL";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf name {
@@ -285,8 +375,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type string;
+<<<<<<< HEAD
                     description
                         "MST Region name";
+=======
+                    description "MST Region name";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf revision {
@@ -295,8 +389,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint32;
+<<<<<<< HEAD
                     description
                         "MST Revision number";
+=======
+                    description "MST Revision number";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf max_hops {
@@ -305,8 +403,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint8;
+<<<<<<< HEAD
                     description
                         "MST Max hops";
+=======
+                    description "MST Max hops";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf hello_time {
@@ -315,8 +417,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint8;
+<<<<<<< HEAD
                     description
                         "MST hello time";
+=======
+                    description "MST hello time";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf max_age {
@@ -325,8 +431,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint8;
+<<<<<<< HEAD
                     description
                         "MST max age";
+=======
+                    description "MST max age";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf forward_delay {
@@ -335,8 +445,12 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint8;
+<<<<<<< HEAD
                     description
                         "MST forward delay";
+=======
+                    description "MST forward delay";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
 
                 leaf hold_count {
@@ -345,12 +459,17 @@ module sonic-stp {
                         error-app-tag stp-invalid;
                     }
                     type uint8;
+<<<<<<< HEAD
                     description
                         "MST hold count";
+=======
+                    description "MST hold count";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
                 }
             }
         }
 
+<<<<<<< HEAD
         container STP_MST_INST {
             list STP_MST_INST_LIST {
                 key "instance";
@@ -375,10 +494,88 @@ module sonic-stp {
                     }
                     description
                         "The manageable component of the Bridge Identifier";
+=======
+        container interface {
+            list interface {
+                key "name";
+                description "Interface-level STP configuration";
+                leaf name {
+                    type string;
+                    description "Interface name (physical or port-channel)";
+                }
+                leaf enabled {
+                    type boolean;
+                    default "true";
+                    description "Whether STP is enabled on this interface";
+                }
+                leaf root_guard {
+                    type boolean;
+                    default "false";
+                    description "Whether root guard is enabled on this interface";
+                }
+                leaf bpdu_guard {
+                    type boolean;
+                    default "false";
+                    description "Whether BPDU guard is enabled";
+                }
+                leaf bpdu_guard_do_disable {
+                    type boolean;
+                    default "false";
+                    description "Disable port when BPDU is received";
+                }
+                leaf path_cost {
+                    type uint32 {
+                        range "1..200000000";
+                    }
+                    description "Path cost for this interface";
+                }
+                leaf priority {
+                    type uint8 {
+                        range "0..240";
+                    }
+                    default "128";
+                    description "Interface priority";
+                }
+                leaf portfast {
+                    type boolean;
+                    default "false";
+                    description "Portfast is enabled or not";
+                }
+                leaf uplink_fast {
+                    type boolean;
+                    default "false";
+                    description "Uplink fast is enabled or not";
                 }
             }
         }
 
+        container mst_instance {
+            list mst_instance {
+                when "../global/mode = 'mst'";
+                key "instance-id";
+                description "MST instance configurations";
+                leaf instance-id {
+                    type uint8 {
+                        range "0..63";
+                    }
+                    description "MST instance ID";
+                }
+                leaf bridge_priority {
+                    type uint16 {
+                        range "0..61440";
+                    }
+                    default "32768";
+                    description "Bridge priority for this MST instance";
+                }
+                leaf vlan_list {
+                    type string;
+                    description "List of VLANs assigned to this MST instance";
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
+                }
+            }
+        }
+
+<<<<<<< HEAD
         container STP_MST_PORT {
             list STP_MST_PORT_LIST {
                 key "inst_id ifname";
@@ -400,6 +597,36 @@ module sonic-stp {
                         "Reference to Ethernet interface or PortChannel";
                 }
                 uses interfaceAttr;
+=======
+        container mst_port {
+            list mst_port {
+                when "../global/mode = 'mst'";
+                key "instance-id interface";
+                description "Per-port MST configuration";
+                leaf instance-id {
+                    type uint8 {
+                        range "0..63";
+                    }
+                    description "MST instance ID";
+                }
+                leaf interface {
+                    type string;
+                    description "Interface name (physical or port-channel)";
+                }
+                leaf path_cost {
+                    type uint32 {
+                        range "1..20000000";
+                    }
+                    description "Path cost for this MST instance port";
+                }
+                leaf priority {
+                    type uint8 {
+                        range "0..240";
+                    }
+                    default "128";
+                    description "Port priority for this MST instance";
+                }
+>>>>>>> ddfcc98d031b6f46853fd499afae377559c5c794
             }
         }
     }
