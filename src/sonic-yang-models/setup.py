@@ -288,7 +288,7 @@ setup(
                          './cvlyang-models/sonic-macsec.yang',
                          './cvlyang-models/sonic-bmp.yang',
                          './cvlyang-models/sonic-serial-console.yang',
-                         './yang-models/sonic-stp.yang',
+                         './cvlyang-models/sonic-stp.yang',
                          './cvlyang-models/sonic-bgp-sentinel.yang']),
     ],
     zip_safe=False,
