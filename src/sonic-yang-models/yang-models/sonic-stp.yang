@@ -1,16 +1,24 @@
 module sonic-stp {
+    yang-version 1.1;
     namespace "http://github.com/sonic-net/sonic-stp";
     prefix stp;
-    yang-version 1.1;
 
     import sonic-extension {
         prefix sonic-ext;
     }
 
-    description "SONiC STP YANG model for PVST and MST configurations";
+    description 
+        "SONiC STP YANG model for PVST and MST configurations";
+    
+    revision 2024-12-30 {
+        description 
+            "Version01 for combined PVST configurations.";
+    }
 
-    revision 2024-11-24 {
-        description "Version01 for combined PVST configurations.";
+    extension dependent-on {
+        argument "dependency";
+        description 
+            "Indicates module dependencies";
     }
 
     grouping vlanModeAttr {
@@ -195,7 +203,10 @@ module sonic-stp {
         container STP_PORT {
             list STP_PORT_LIST {
                 key "ifname";
-                sonic-ext:dependent-on "STP_LIST";
+                //sonic-ext:dependent-on "STP_LIST";
+                must "/sonic-spanning-tree/STP/STP_LIST" {
+                    error-message "STP global configuration must exist";
+                }
                 leaf ifname {
                     type string;
                     description
@@ -269,7 +280,10 @@ module sonic-stp {
             list STP_MST_LIST {
                 max-elements 1;
                 key "keyleaf";
-                sonic-ext:dependent-on "STP_LIST";
+                //sonic-ext:dependent-on "STP_LIST";
+                must "/sonic-spanning-tree/STP/STP_LIST" {
+                    error-message "STP global configuration must exist";
+                }
 
                 leaf keyleaf {
                     type enumeration {
