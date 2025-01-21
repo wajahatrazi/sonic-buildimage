@@ -1,9 +1,6 @@
 module sonic-stp {
-    
     yang-version 1.1;
-    
     namespace "http://github.com/sonic-net/sonic-stp";
-    
     prefix stp;
 
     import sonic-extension {
@@ -13,9 +10,9 @@ module sonic-stp {
     description
         "This module contains the collection of YANG definitions for the PVST & MSTP";
 
-    revision 2024-12-30 {
+    revision 2025-01-22 {
         description 
-            "Version01 for combined PVST & MSTP configurations.";
+            "Initial YANG model written for PVST & MSTP configurations xFlow & BRCM";
     }
 
     grouping vlanModeAttr {
@@ -102,7 +99,7 @@ module sonic-stp {
         }
     }
 
-    container spanning-tree {
+    container sonic-stp {
         description
             "Top level container for SONiC Spanning Tree configurations";
 
@@ -240,7 +237,7 @@ module sonic-stp {
                     "List of STP port List attributes.";
                 key "ifname";
                 
-                sonic-ext:dependent-on "stp-list";
+                //sonic-ext:dependent-on "stp-list";
 
                 leaf ifname {
                     type string;
@@ -330,7 +327,8 @@ module sonic-stp {
                 max-elements 1;
                 key "keyleaf";
                 
-                sonic-ext:dependent-on "stp-list";
+                
+                //sonic-ext:dependent-on "stp-list";
 
                 leaf keyleaf {
                     type enumeration {
