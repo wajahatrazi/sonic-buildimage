@@ -1,6 +1,6 @@
 {
-    "STP_GLOBAL_VALID": {
-        "desc": "Configure valid global STP settings"
+    "PVST_GLOBAL_VALID": {
+        "desc": "Configure valid global PVST settings"
 
     }
 }

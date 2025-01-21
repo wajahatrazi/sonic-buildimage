@@ -1,8 +1,8 @@
 {
-    "STP_GLOBAL_VALID": {
-        "sonic-stp:sonic-spanning-tree": {
-            "sonic-spanning-tree:STP": {
-                "STP_LIST": [
+    "PVST_GLOBAL_VALID": {
+        "sonic-stp:spanning-tree": {
+            "spanning-tree:stp-config": {
+                "stp-list": [
                     {
                         "keyleaf": "GLOBAL",
                         "mode": "pvst",

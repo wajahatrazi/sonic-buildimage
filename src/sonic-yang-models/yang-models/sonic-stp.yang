@@ -1,27 +1,27 @@
 module sonic-stp {
+    
     yang-version 1.1;
+    
     namespace "http://github.com/sonic-net/sonic-stp";
+    
     prefix stp;
 
     import sonic-extension {
         prefix sonic-ext;
     }
-
-    description 
-        "SONiC STP YANG model for PVST and MST configurations";
     
+    description
+        "This module contains the collection of YANG definitions for the PVST & MSTP";
+
     revision 2024-12-30 {
         description 
-            "Version01 for combined PVST configurations.";
-    }
-
-    extension dependent-on {
-        argument "dependency";
-        description 
-            "Indicates module dependencies";
+            "Version01 for combined PVST & MSTP configurations.";
     }
 
     grouping vlanModeAttr {
+        description
+            "Configuration parameters";
+
         leaf forward_delay {
             type uint8 {
                 range "4..30" {
@@ -74,6 +74,9 @@ module sonic-stp {
     }
 
     grouping interfaceAttr {
+        description
+            "Configuration parameters of interfaces.";
+
         leaf path_cost {
             type uint64 {
                 range "1..200000000" {
@@ -99,15 +102,26 @@ module sonic-stp {
         }
     }
 
-    container sonic-spanning-tree {
+    container spanning-tree {
+        description
+            "Top level container for SONiC Spanning Tree configurations";
 
-        container STP {
-            list STP_LIST {
+        container stp-config {
+            description
+                "Global configurations";
+
+            list stp-list {
+                description
+                    "STP list containing global attributes";
                 max-elements 1;
                 key "keyleaf";
+                
                 leaf keyleaf {
                     type enumeration {
-                        enum GLOBAL;
+                        enum GLOBAL {
+                            description
+                                "Global configuration identifier";
+                        }
                     }
                     description
                         "Key node identifier. It's value is always GLOBAL";
@@ -115,8 +129,14 @@ module sonic-stp {
 
                 leaf mode {
                     type enumeration {
-                        enum pvst;
-                        enum mst;
+                        enum pvst {
+                            description
+                                "Per VLAN Spanning Tree Mode";
+                        }
+                        enum mst {
+                            description
+                                "Multiple Spanning Tree Mode";
+                        }
                     }
                     mandatory true;
                     description
@@ -124,17 +144,17 @@ module sonic-stp {
                 }
 
                 leaf rootguard_timeout {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode!='mst'" {
-                        error-message "Configuration not allowed in MST mode";
-                        error-app-tag stp-invalid;
-                    }
-
                     type uint16 {
                         range "5..600" {
                             error-message "Invalid Root-guard Timeout value.";
                         }
                     }
                     units seconds;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode!='mst'" {
+                        error-message "Root guard timeout not allowed in MST mode";
+                        error-app-tag stp-invalid;
+                    }
+                    
                     description
                         "Once superior BPDUs stop coming on the port, device
                         will wait for a period until root guard timeout before
@@ -145,9 +165,15 @@ module sonic-stp {
             }
         }
 
-        container STP_VLAN {
-            list STP_VLAN_LIST {
+        container stp-vlan {
+            description
+                "VLAN Specific STP Configurations";
+
+            list stp-vlan-list {
+                description
+                    "List of VLAN STP configurations";
                 key "name";
+
                 leaf name {
                     type string;
                     description
@@ -176,13 +202,18 @@ module sonic-stp {
             }
         }
 
-        container STP_VLAN_PORT {
-            list STP_VLAN_PORT_LIST {
+        container stp-vlan-port {
+            description
+                "Vlan port configurations";
+
+            list stp-vlan-port-list {
+                description
+                    "List of VLAN port configurations";
                 key "vlan-name ifname";
 
                 leaf vlan-name {
                     type leafref {
-                        path "../../../STP_VLAN/STP_VLAN_LIST/name";
+                        path "../../../stp-vlan/stp-vlan-list/name";
                     }
                     description
                         "Reference to Vlan";
@@ -190,7 +221,7 @@ module sonic-stp {
 
                 leaf ifname {
                     type leafref {
-                        path "../../../STP_PORT/STP_PORT_LIST/ifname";
+                        path "../../../stp-port/stp-port-list/ifname";
                     }
                     description
                         "Reference to Ethernet interface or PortChannel";
@@ -200,13 +231,17 @@ module sonic-stp {
             }
         }
 
-        container STP_PORT {
-            list STP_PORT_LIST {
+        container stp-port {
+            description
+                "Port Configurations.";
+            
+            list stp-port-list {
+                description
+                    "List of STP port List attributes.";
                 key "ifname";
-                //sonic-ext:dependent-on "STP_LIST";
-                must "/sonic-spanning-tree/STP/STP_LIST" {
-                    error-message "STP global configuration must exist";
-                }
+                
+                sonic-ext:dependent-on "stp-list";
+
                 leaf ifname {
                     type string;
                     description
@@ -245,13 +280,13 @@ module sonic-stp {
                 }
 
                 leaf portfast {
-                    must "current()!='true' or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='pvst'" {
+                    type boolean;
+                    must "current()!='true' or ../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='pvst'" {
                         error-message "Configuration not allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type boolean;
                     description
-                        "Enable/Disable portfast on port";
+                        "Enable/Disable portfast on port in PVST only";
                 }
 
                 uses interfaceAttr;
@@ -265,9 +300,18 @@ module sonic-stp {
 
                 leaf link_type {
                     type enumeration {
-                        enum auto;
-                        enum shared;
-                        enum point-to-point;
+                        enum auto {
+                            description
+                                "Specifies the interface's link type. Permissible values 'auto'";
+                        }
+                        enum shared {
+                            description
+                                "Specifies the interface's link type. Permissible values 'shared'";
+                        }
+                        enum point-to-point {
+                            description
+                                "Specifies the interface's link type. Permissible values 'point-to-point'";
+                        }
                     }
                     description
                         "Specifies the interface's link type. Permissible values
@@ -276,97 +320,108 @@ module sonic-stp {
             }
         }
 
-        container STP_MST {
-            list STP_MST_LIST {
+        container stp-mst {
+            description
+                "MST specific configuration container";
+
+            list stp-mst-list {
+                description
+                    "List of MST global configurations";
                 max-elements 1;
                 key "keyleaf";
-                //sonic-ext:dependent-on "STP_LIST";
-                must "/sonic-spanning-tree/STP/STP_LIST" {
-                    error-message "STP global configuration must exist";
-                }
+                
+                sonic-ext:dependent-on "stp-list";
 
                 leaf keyleaf {
                     type enumeration {
-                        enum GLOBAL;
+                        enum GLOBAL {
+                            description
+                                "Global MST";
+                        }
                     }
                     description
                         "Key node identifier. It's value is always GLOBAL";
                 }
 
                 leaf name {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type string;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type string;
                     description
                         "MST Region name";
                 }
 
                 leaf revision {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint32;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint32;
                     description
                         "MST Revision number";
                 }
 
                 leaf max_hops {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint8;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint8;
                     description
                         "MST Max hops";
                 }
 
                 leaf hello_time {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint8;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint8;
                     description
                         "MST hello time";
                 }
 
                 leaf max_age {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint8;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint8;
                     description
                         "MST max age";
                 }
 
                 leaf forward_delay {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint8;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint8;
                     description
                         "MST forward delay";
                 }
 
                 leaf hold_count {
-                    must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+                    type uint8;
+                    must "../../../stp-config/stp-list[keyleaf='GLOBAL']/mode='mst'" {
                         error-message "Configuration allowed in MST mode";
                         error-app-tag stp-invalid;
                     }
-                    type uint8;
                     description
                         "MST hold count";
                 }
             }
         }
 
-        container STP_MST_INST {
-            list STP_MST_INST_LIST {
+        container stp-mst-inst {
+            description
+                "STP MST Instance Configuration.";
+
+            list stp-mst-inst-list {
+                description
+                    "List of STP MST Instance attributes.";
                 key "instance";
 
                 leaf instance {
@@ -393,13 +448,18 @@ module sonic-stp {
             }
         }
 
-        container STP_MST_PORT {
-            list STP_MST_PORT_LIST {
+        container stp-mst-port {
+            description
+                "STP MST Port configurations.";
+
+            list stp-mst-port-list {
+                description
+                    "STP MST Port List attributes";
                 key "inst_id ifname";
 
                 leaf inst_id {
                     type leafref {
-                        path "../../../STP_MST_INST/STP_MST_INST_LIST/instance";
+                        path "../../../stp-mst-inst/stp-mst-inst-list/instance";
                     }
                     description
                         "Reference to MST Instance";
@@ -407,9 +467,8 @@ module sonic-stp {
 
                 leaf ifname {
                     type leafref {
-                        path "../../../STP_PORT/STP_PORT_LIST/ifname";
+                        path "../../../stp-port/stp-port-list/ifname";
                     }
-
                     description
                         "Reference to Ethernet interface or PortChannel";
                 }
