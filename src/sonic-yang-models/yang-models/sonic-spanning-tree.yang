@@ -1,4 +1,4 @@
-module sonic-stp {
+module sonic-spanning-tree {
     yang-version 1.1;
     namespace "http://github.com/sonic-net/sonic-stp";
     prefix stp;
@@ -99,7 +99,7 @@ module sonic-stp {
         }
     }
 
-    container sonic-stp {
+    container sonic-spanning-tree {
         description
             "Top level container for SONiC Spanning Tree configurations";
 
