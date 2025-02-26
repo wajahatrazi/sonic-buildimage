@@ -267,6 +267,8 @@ class Test_yang_models:
                 elif test in self.SpecialTests:
                     ret = ret + self.runSpecialTest(test);
                 else:
+                    #log.error("Unexpected Test: {}".format(test))
+                    #ret = ret + 1
                     raise Exception("Unexpected Test")
         except Exception as e:
             ret = FAIL * len(self.tests)
