@@ -2365,6 +2365,7 @@
 
         "STP": {
             "GLOBAL": {
+                "global-stp-mode": "GLOBAL",
                 "mode": "pvst",
                 "rootguard_timeout": "30",
                 "forward_delay": "15",
@@ -2438,6 +2439,7 @@
 
         "STP_MST": {
             "GLOBAL": {
+                "global-stp-mode": "GLOBAL",
                 "name": "region1",
                 "revision": "0",
                 "max_hops": "20",

@@ -22,23 +22,19 @@
                 "GLOBAL": [
                     {
                         "global-stp-mode": "GLOBAL",
-                        "mode": "mst",
-                        "forward_delay": 15,
-                        "hello_time": 2,
-                        "max_age": 20,
-                        "priority": 32768
+                        "mode": "mst"
                     }
                 ]
             },
             "sonic-spanning-tree:STP_MST": {
-                "MST_GLOBAL": [
+                "GLOBAL": [
                     {
                         "global-stp-mode": "GLOBAL",
                         "name": "region1",
                         "revision": 0,
                         "max_hops": 20,
-                        "hello_time": 2,
                         "max_age": 20,
+                        "hello_time": 2,
                         "forward_delay": 15
                     }
                 ]

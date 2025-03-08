@@ -151,10 +151,7 @@ module sonic-spanning-tree {
                     }
                     units "seconds";
                     default 30;
-                    must "../mode != 'mst'" {
-                        error-message "Root guard timeout is not allowed in MST mode.";
-                        error-app-tag stp-invalid;
-                    }
+                    when "../mode = 'pvst'";  // Only apply the default when mode is pvst
                     description
                         "Time before re-enabling a port in root-guard mode.";
                 }
@@ -320,7 +317,7 @@ module sonic-spanning-tree {
             description
                 "MST specific configuration container, maps to STP_MST_TABLE";
 
-            list MST_GLOBAL {
+            list GLOBAL {
                 description
                     "List of MST global configurations";
                 max-elements 1;
@@ -375,19 +372,6 @@ module sonic-spanning-tree {
                         "MST Max hops";
                 }
 
-                leaf hello_time {
-                    type uint8 {
-                        range "1..10";
-                    }
-                    default 2;
-                    must "../../../STP/GLOBAL[global-stp-mode='GLOBAL']/mode='mst'" {
-                        error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
-                    }
-                    description
-                        "MST hello time in seconds";
-                }
-
                 leaf max_age {
                     type uint8 {
                         range "6..40";
@@ -399,6 +383,19 @@ module sonic-spanning-tree {
                     }
                     description
                         "MST max age in seconds";
+                }
+
+                leaf hello_time {
+                    type uint8 {
+                        range "1..10";
+                    }
+                    default 2;
+                    must "../../../STP/GLOBAL[global-stp-mode='GLOBAL']/mode='mst'" {
+                        error-message "Configuration allowed in MST mode";
+                        error-app-tag stp-invalid;
+                    }
+                    description
+                        "MST hello time in seconds";
                 }
 
                 leaf forward_delay {
