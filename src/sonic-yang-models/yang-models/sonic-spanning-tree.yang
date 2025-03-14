@@ -161,7 +161,7 @@ module sonic-spanning-tree {
                     /*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'pvst')" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {
                         error-message "Root guard timeout configuration is allowed only in PVST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                 }
                 uses vlanModeAttr;
@@ -187,7 +187,7 @@ module sonic-spanning-tree {
                     type uint16 {
                         range "1..4095" {
                             error-message "Vlan ID out of range";
-                            error-app-tag vlanid-invalid;
+                            /*error-app-tag vlanid-invalid;*/
                         }
                     }
                     description
@@ -289,16 +289,11 @@ module sonic-spanning-tree {
                 leaf portfast {
                     type boolean;
                     /*must "current()!='true' or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='pvst'" {}*/
-                    /*must "(not(boolean(.) = true()) or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'pvst')" {}*/
-                    /*must "(not(boolean(.) = true()) or not(../mode = 'mst'))" {}*/
-                    /*must "not(.) or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode != 'mst')" {}*/
-                    /*must "(not(boolean(.) = true()) or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'pvst')" {}*/
-                    /*must "(not(boolean(.) = true()) or stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'pvst')" {}*/
-                    /*must "not(boolean(.) = true()) or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'pvst'" {}*/
-                    /*must "not(boolean(.) = true()) or stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'pvst'" {}*/
-                    must "not(.) or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {
-                        error-message "Configuration not allowed in MST mode";
-                        error-app-tag stp-invalid;
+                    /*must "not(.) or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {}*/
+                    /*must "(current()!='true') or (/sonic-spanning-tree:sonic-spanning-tree/sonic-spanning-tree:STP/sonic-spanning-tree:STP_LIST[sonic-spanning-tree:keyleaf = 'GLOBAL']/sonic-spanning-tree:mode = 'pvst')" {}*/
+                    must "(current()!='true') or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {
+                        error-message "PortFast configuration allowed in PVST mode only";
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "Enable/Disable portfast on port in PVST only";
@@ -311,6 +306,9 @@ module sonic-spanning-tree {
                     type boolean;
                     description
                         "Enable/Disable Edge-port on interface";
+                    must "(current()!='true') or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst')" {
+                        error-message "EdgePort configuration allowed in MST only";
+                    }
                 }
 
                 leaf link_type {
@@ -330,6 +328,9 @@ module sonic-spanning-tree {
                     }
                     description
                         "Specifies the interface's link type: shared, point-to-point or auto";
+                    must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst')" {
+                        error-message "Configuration allowed in MST mode only";
+                    }
                 }
             }
         }
@@ -367,7 +368,7 @@ module sonic-spanning-tree {
                     /*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST Region name";
@@ -379,7 +380,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST Revision number";
@@ -391,7 +392,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST Max hops";
@@ -403,7 +404,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST max age in seconds";
@@ -415,7 +416,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST hello time in seconds";
@@ -427,7 +428,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST forward delay in seconds";
@@ -439,7 +440,7 @@ module sonic-spanning-tree {
                     /*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
                     must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
                         error-message "Configuration allowed in MST mode";
-                        error-app-tag stp-invalid;
+                        /*error-app-tag stp-invalid;*/
                     }
                     description
                         "MST hold count";
