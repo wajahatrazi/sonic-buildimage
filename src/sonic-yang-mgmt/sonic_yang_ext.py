@@ -1172,7 +1172,7 @@ class SonicYangExtMixin:
           self._cropConfigDB()
           # xlated result will be in self.xlateJson
           self._xlateConfigDB(xlateFile=xlateFile)
-          #print(self.xlateJson)
+          print(self.xlateJson)
           self.sysLog(msg="Try to load Data in the tree")
           self.root = self.ctx.parse_data_mem(dumps(self.xlateJson), \
                         ly.LYD_JSON, ly.LYD_OPT_CONFIG|ly.LYD_OPT_STRICT)

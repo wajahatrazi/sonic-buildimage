@@ -301,10 +301,14 @@ class Test_SonicYang(object):
         NON_CONFIG_YANG_FILES = 3 + EVENT_YANG_FILES
         # read config
         jIn = self.readIjsonInput(test_file, 'SAMPLE_CONFIG_DB_JSON')
+        print(jIn + "\n")
         jIn = json.loads(jIn)
+        print(jIn + "\n")
         numTables = len(jIn)
+        print(numTables + "\n")
         # load config and create Data tree
         syc.loadData(jIn)
+        print(syc.jIn)
         # check all tables are loaded and config related to all Yang Models is
         # loaded in Data tree.
         assert len(syc.jIn) == numTables
