@@ -1,6 +1,7 @@
 module sonic-spanning-tree {
 	yang-version 1.1;
 	namespace "http://github.com/sonic-net/sonic-stp";
+	
 	prefix stp;
 
 	/*
@@ -24,7 +25,6 @@ module sonic-spanning-tree {
 		reference
 			"Initial implementation for SONiC STP support";
 }
-
 
 	grouping vlanModeAttr {
 		description
@@ -145,7 +145,6 @@ module sonic-spanning-tree {
 					mandatory true;
 					description
 						"STP operating mode";
-					/*default "pvst";
 				}
 
 				leaf rootguard_timeout {
@@ -155,16 +154,13 @@ module sonic-spanning-tree {
 						}
 					}
 					units "seconds";
-					description
-						"Once superior BPDUs stop coming on the port, device will wait for a period until root guard timeout before moving the port to forwarding state";
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode!='mst'" {}*/
-					/*must "../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					/*must "(../mode = 'pvst')" {}*/
-					/*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'pvst')" {}*/
-					must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {
+					must "../mode = 'pvst'" {
 						error-message "Root guard timeout configuration is allowed only in PVST mode";
 						/*error-app-tag stp-invalid;*/
 					}
+					default 30;
+					description
+						"Once superior BPDUs stop coming on the port, device will wait for a period until root guard timeout before moving the port to forwarding state";
 				}
 				uses vlanModeAttr;
 			}
@@ -202,7 +198,6 @@ module sonic-spanning-tree {
 					description
 						"Spanning tree enabled/disabled on Vlan";
 				}
-
 				uses vlanModeAttr;
 			}
 		}
@@ -212,14 +207,13 @@ module sonic-spanning-tree {
 				"Vlan port configurations, maps to STP_VLAN_PORT_TABLE";
 
 			list STP_VLAN_PORT_LIST {
+				key "vlan-name ifname";
 				description
 					"List of VLAN port configurations";
-				key "vlan-name ifname";
 
 				leaf vlan-name {
 					type leafref {
-						/*path "../../../STP_VLAN/STP_VLAN_LIST/name";*/
-						path "/stp:sonic-spanning-tree/stp:STP_VLAN/stp:STP_VLAN_LIST/stp:name";
+						path "../../../STP_VLAN/STP_VLAN_LIST/name";
 					}
 					description
 						"Reference to Vlan";
@@ -227,8 +221,7 @@ module sonic-spanning-tree {
 
 				leaf ifname {
 					type leafref {
-						/*path "../../../STP_PORT/STP_PORT_LIST/ifname";*/
-						path "/stp:sonic-spanning-tree/stp:STP_PORT/stp:STP_PORT_LIST/stp:ifname";
+						path "../../../STP_PORT/STP_PORT_LIST/ifname";
 					}
 					description
 						"Reference to Ethernet interface or PortChannel";
@@ -243,10 +236,9 @@ module sonic-spanning-tree {
 				"Port Configurations, maps to STP_PORT_TABLE";
 
 			list STP_PORT_LIST {
+				key "ifname";
 				description
 					"List of STP port List attributes";
-
-				key "ifname";
 
 				/*sonic-ext:dependent-on "STP_LIST";*/
 				/*sonic-ext:dependent-on "sonic-spanning-tree:STP/STP_LIST";*/
@@ -266,43 +258,41 @@ module sonic-spanning-tree {
 
 				leaf root_guard {
 					type boolean;
+					default false;
 					description
 						"Enable/Disable Root guard on port";
 				}
 
 				leaf bpdu_guard {
 					type boolean;
+					default false;
 					description
 						"Enable/Disable port BPDU guard";
 				}
 
 				leaf bpdu_guard_do_disable {
 					type boolean;
+					default false;
 					description
 						"Port to be disabled as it receives a BPDU";
 				}
 
 				leaf uplink_fast {
 					type boolean;
+					default false;
 					description
 						"Enable/Disable uplink-fast on port";
 				}
 
 				leaf portfast {
 					type boolean;
-					/*must "current()!='true' or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='pvst'" {}*/
-					/*must "not(.) or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {}*/
-					/*must "(current()!='true') or (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {}*/
-					/*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst')" {}*/
-					/*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst') and ((current() = 'true') or (current() = 'false'))" {}*/
-					/*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'pvst') and (current() = 'true')" {}*/
-					description
-						"Enable/Disable portfast on port in PVST only";
-					must "(current() != 'true') or true" {
+					must "current()='false' or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='pvst'" {
 						error-message "Mode must be PVST, and PortFast must be enabled for this configuration to be valid.";
 						/*error-app-tag stp-invalid;*/
 					}
-
+					default false;
+					description
+						"Enable/Disable portfast on port in PVST only";
 				}
 
 				uses interfaceAttr;
@@ -310,12 +300,13 @@ module sonic-spanning-tree {
 				// For MST
 				leaf edge_port {
 					type boolean;
+					must "current()='false' or ../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
+						error-message "Mode must be MST, and EdgePort must be enabled for this configuration to be valid.";
+						/*error-app-tag stp-invalid;*/
+					}
+					default false;
 					description
 						"Enable/Disable Edge-port on interface";
-					/*must "(current() = 'true') and (/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst')" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
-						error-message "EdgePort configuration allowed in MST only";
-					}
 				}
 
 				leaf link_type {
@@ -333,12 +324,12 @@ module sonic-spanning-tree {
 								"Specifies the interface's link type as point-to-point";
 						}
 					}
-					description
-						"Specifies the interface's link type: shared, point-to-point or auto";
-
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode only";
 					}
+					default auto;
+					description
+						"Specifies the interface's link type: shared, point-to-point or auto";
 				}
 			}
 		}
@@ -352,6 +343,7 @@ module sonic-spanning-tree {
 				max-elements 1;
 				description
 					"List of MST global configurations";
+				
 				/*sonic-ext:dependent-on "STP_LIST";*/
 				/*sonic-ext:dependent-on "sonic-spanning-tree:STP/STP_LIST";*/
 
@@ -368,10 +360,7 @@ module sonic-spanning-tree {
 
 				leaf name {
 					type string;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					/*must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
@@ -381,9 +370,7 @@ module sonic-spanning-tree {
 
 				leaf revision {
 					type uint32;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
@@ -393,57 +380,51 @@ module sonic-spanning-tree {
 
 				leaf max_hops {
 					type uint8;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
+					default 20;
 					description
 						"MST Max hops";
 				}
 
 				leaf max_age {
 					type uint8;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
+					default 20;
 					description
 						"MST max age in seconds";
 				}
 
 				leaf hello_time {
 					type uint8;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
+					default 2;
 					description
 						"MST hello time in seconds";
 				}
 
 				leaf forward_delay {
 					type uint8;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "(/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf='GLOBAL']/stp:mode = 'mst')" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
+					default 15;
 					description
 						"MST forward delay in seconds";
 				}
 
 				leaf hold_count {
 					type uint8;
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {}*/
-					/*must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode = 'mst'" {}*/
-					must "/stp:sonic-spanning-tree/stp:STP/stp:STP_LIST[stp:keyleaf = 'GLOBAL']/stp:mode = 'mst'" {
+					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode";
 						/*error-app-tag stp-invalid;*/
 					}
@@ -458,10 +439,9 @@ module sonic-spanning-tree {
 				"STP MST Instance Configuration, maps to STP_MST_INST_TABLE";
 
 			list STP_MST_INST_LIST {
+				key "instance";
 				description
 					"List of STP MST Instance attributes";
-
-				key "instance";
 
 				/*sonic-ext:dependent-on "sonic-spanning-tree:STP/STP_LIST";*/
 
@@ -483,6 +463,7 @@ module sonic-spanning-tree {
 							error-message "Invalid Bridge Priority value";
 						}
 					}
+					default 32768;
 					description
 						"The manageable component of the Bridge Identifier";
 				}
@@ -494,10 +475,9 @@ module sonic-spanning-tree {
 				"STP MST Port configurations, maps to STP_MST_PORT_TABLE";
 
 			list STP_MST_PORT_LIST {
-				description
-					"STP MST Port List attributes";
-
 				key "inst_id ifname";
+				description
+					"STP MST Port List attributes";			
 
 				leaf inst_id {
 					type leafref {

@@ -2381,26 +2381,10 @@
                 "priority": "32768",
                 "enabled": "true",
                 "vlanid": "100"
-            },
-            "Vlan200": {
-                "forward_delay": "15",
-                "hello_time": "2",
-                "max_age": "20",
-                "priority": "32768",
-                "enabled": "true",
-                "vlanid": "200"
             }
         },
         "STP_VLAN_PORT": {
             "Vlan100|Ethernet0": {
-                "path_cost": "200000",
-                "priority": "128"
-            },
-            "Vlan100|PortChannel2": {
-                "path_cost": "20000",
-                "priority": "64"
-            },
-            "Vlan200|Ethernet4": {
                 "path_cost": "200000",
                 "priority": "128"
             }
@@ -2413,26 +2397,6 @@
                 "bpdu_guard_do_disable": "false",
                 "path_cost": "200",
                 "priority": "128",
-                "portfast": "false",
-                "uplink_fast": "false"
-            },
-            "Ethernet4": {
-                "enabled": "true",
-                "root_guard": "false",
-                "bpdu_guard": "false",
-                "bpdu_guard_do_disable": "false",
-                "path_cost": "200000",
-                "priority": "128",
-                "portfast": "false",
-                "uplink_fast": "false"
-            },
-            "PortChannel2": {
-                "enabled": "false",
-                "root_guard": "false",
-                "bpdu_guard": "false",
-                "bpdu_guard_do_disable": "false",
-                "path_cost": "20000",
-                "priority": "64",
                 "portfast": "false",
                 "uplink_fast": "false"
             }
