@@ -327,7 +327,6 @@ module sonic-spanning-tree {
 					must "../../../STP/STP_LIST[keyleaf='GLOBAL']/mode='mst'" {
 						error-message "Configuration allowed in MST mode only";
 					}
-					default auto;
 					description
 						"Specifies the interface's link type: shared, point-to-point or auto";
 				}
